@@ -1,34 +1,11 @@
-Total number of patients: 11
-Patient ID: 654321
-Check in Date: 5/1/2020
-
-Patient ID: 21
-Check in Date: 5/5/2020
-
-Patient ID: 345678
-Check in Date: 5/5/2020
-
-Patient ID: 123456
-Check in Date: 5/10/2020
-
-Patient ID: 23
-Check in Date: 5/12/2020
-
-Patient ID: 6666
-Check in Date: 5/19/2020
-
-Patient ID: 777888
-Check in Date: 5/28/2020
-
-Patient ID: 1234
-Check in Date: 6/15/2020
-
-Patient ID: 444
-Check in Date: 6/20/2020
-
-Patient ID: 555
-Check in Date: 7/4/2020
-
-Patient ID: 5050
-Check in Date: 7/4/2020
-
+654321: 0->654321
+    21: 0->654321->21
+345678: 0->345678
+123456: 0->654321->21->123456
+    23: 0->654321->21->123456->23
+  6666: 0->654321->21->123456->23->6666
+777888: 0->654321->21->777888
+  1234: 0->654321->21->123456->1234
+   444: 0->345678->444
+   555: 0->555
+  5050: 0->5050

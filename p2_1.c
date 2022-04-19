@@ -46,6 +46,39 @@ Patient *initialize(int month, int day, int year, int patientID, int infected_by
 	return new_patient;
 }
 
+/* find the index for a patient within the patient_list depending on the patientID given in Memory *list*/
+int patient_index(Patient *patient_list, int patient_count, int patientID){
+	int i;
+	for(i = 0; i < patient_count; i++){
+		if(patient_list[i].patientID == patientID){
+			return i;
+		}
+	}
+}
+
+Patient *find_source(Patient *patient_list, int patient_count, int patientID){
+	int i;
+
+	if(patientID == 0){
+		return NULL;
+	}
+	for(i = 0; i < patient_count;i++){
+		if(patient_list[i].patientID == patientID){
+			return (patient_list + i);
+		}
+	}
+}
+
+void print_list(Patient *patient, FILE *out){
+	if(patient->infected_by == NULL){
+		fprintf(out, "0->%d", patient->patientID);
+	}else{
+		print_list(patient->infected_by, out);
+		fprintf(out, "->%d", patient->patientID);
+		return;
+	}
+}
+
 Memory *read_data(FILE *in, int *list_size){
 	char buffer[40];
 	char month[3];
@@ -171,21 +204,29 @@ int main(int argc, char **argv){
 			patient_list[patient_count-1] = *initialize(list[i].month, list[i].day, 
 				list[i].year, list[i].patientID, list[i].infected_by);
 		}else if(!strcmp(list[i].action,"check out")){
-			; /*unfinished*/
+			patient_list[patient_index(patient_list,patient_count,list[i].patientID)].check_out_month = list[i].month;
+			patient_list[patient_index(patient_list,patient_count,list[i].patientID)].check_out_day = list[i].day;
+			patient_list[patient_index(patient_list,patient_count,list[i].patientID)].check_out_year = list[i].year;
+			strcpy(patient_list[patient_index(patient_list,patient_count,list[i].patientID)].condition,"check out");
 		}else{
-			; /*unfinished*/
+			patient_list[patient_index(patient_list,patient_count,list[i].patientID)].deceased_month = list[i].month;
+			patient_list[patient_index(patient_list,patient_count,list[i].patientID)].deceased_day = list[i].day;
+			patient_list[patient_index(patient_list,patient_count,list[i].patientID)].deceased_year = list[i].year;
+			strcpy(patient_list[patient_index(patient_list,patient_count,list[i].patientID)].condition,"deceased");
 		}
 	}
 
-	/* Print to see if patient check in data are stored properly */
-	fprintf(out,"Total number of patients: %d\n", patient_count);
+	/* Link the patients together by assigning the patient with infected_by_patientID to the infected_by pointer */
 	for(i = 0; i < patient_count; i++){
-		fprintf(out,"Patient ID: %d\n", patient_list[i].patientID);
-		fprintf(out,"Check in Date: %d/%d/%d\n\n", patient_list[i].check_in_month
-			,patient_list[i].check_in_day, patient_list[i].check_in_year);
+		patient_list[i].infected_by = find_source(patient_list,patient_count,patient_list[i].infected_by_patientID);
+		// printf("Patient ID: %d, Infected by %d\n", patient_list[i].patientID ,patient_list[i].infected_by_patientID);
 	}
 
-	/* I still need to link the patients together */
+	for(i = 0; i < patient_count; i++){
+		fprintf(out, "%6d: ", patient_list[i].patientID);
+		print_list(&patient_list[i], out);
+		fprintf(out, "\n");
+	}
 
 	return 0;
 }
