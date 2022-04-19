@@ -177,10 +177,10 @@ int main(int argc, char **argv){
 		}
 	}
 
-	printf("Total number of patients: %d\n", patient_count);
+	fprintf(out,"Total number of patients: %d\n", patient_count);
 	for(i = 0; i < patient_count; i++){
-		printf("Patient ID: %d\n", patient_list[i].patientID);
-		printf("Check in Date: %d/%d/%d\n\n", patient_list[i].check_in_month
+		fprintf(out,"Patient ID: %d\n", patient_list[i].patientID);
+		fprintf(out,"Check in Date: %d/%d/%d\n\n", patient_list[i].check_in_month
 			,patient_list[i].check_in_day, patient_list[i].check_in_year);
 	}
 
