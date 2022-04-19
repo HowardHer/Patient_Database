@@ -177,6 +177,7 @@ int main(int argc, char **argv){
 		}
 	}
 
+	/* Print to see if patient check in data are stored properly */
 	fprintf(out,"Total number of patients: %d\n", patient_count);
 	for(i = 0; i < patient_count; i++){
 		fprintf(out,"Patient ID: %d\n", patient_list[i].patientID);
